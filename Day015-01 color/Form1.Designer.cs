@@ -67,13 +67,15 @@ namespace Day015_01_color
             this.dBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dB로열기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dB로저장ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dB에서통째로불러오기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dB로통째로저장하기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
-            this.dB에서통째로불러오기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.dB에서통째로저장하기ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.업로드자동화ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.다운로드자동화ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -363,7 +365,9 @@ namespace Day015_01_color
             this.dB로열기ToolStripMenuItem,
             this.dB로저장ToolStripMenuItem,
             this.dB에서통째로불러오기ToolStripMenuItem,
-            this.dB에서통째로저장하기ToolStripMenuItem});
+            this.dB로통째로저장하기ToolStripMenuItem,
+            this.업로드자동화ToolStripMenuItem,
+            this.다운로드자동화ToolStripMenuItem});
             this.dBToolStripMenuItem.Name = "dBToolStripMenuItem";
             this.dBToolStripMenuItem.Size = new System.Drawing.Size(50, 27);
             this.dBToolStripMenuItem.Text = "DB";
@@ -381,6 +385,20 @@ namespace Day015_01_color
             this.dB로저장ToolStripMenuItem.Size = new System.Drawing.Size(267, 28);
             this.dB로저장ToolStripMenuItem.Text = "DB로 저장";
             this.dB로저장ToolStripMenuItem.Click += new System.EventHandler(this.dB로저장ToolStripMenuItem_Click);
+            // 
+            // dB에서통째로불러오기ToolStripMenuItem
+            // 
+            this.dB에서통째로불러오기ToolStripMenuItem.Name = "dB에서통째로불러오기ToolStripMenuItem";
+            this.dB에서통째로불러오기ToolStripMenuItem.Size = new System.Drawing.Size(267, 28);
+            this.dB에서통째로불러오기ToolStripMenuItem.Text = "DB에서 통째로 불러오기";
+            this.dB에서통째로불러오기ToolStripMenuItem.Click += new System.EventHandler(this.dB에서통째로불러오기ToolStripMenuItem_Click);
+            // 
+            // dB로통째로저장하기ToolStripMenuItem
+            // 
+            this.dB로통째로저장하기ToolStripMenuItem.Name = "dB로통째로저장하기ToolStripMenuItem";
+            this.dB로통째로저장하기ToolStripMenuItem.Size = new System.Drawing.Size(267, 28);
+            this.dB로통째로저장하기ToolStripMenuItem.Text = "DB로 통째로 저장하기";
+            this.dB로통째로저장하기ToolStripMenuItem.Click += new System.EventHandler(this.dB에서통째로저장하기ToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 
@@ -414,19 +432,19 @@ namespace Day015_01_color
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
             // 
-            // dB에서통째로불러오기ToolStripMenuItem
+            // 업로드자동화ToolStripMenuItem
             // 
-            this.dB에서통째로불러오기ToolStripMenuItem.Name = "dB에서통째로불러오기ToolStripMenuItem";
-            this.dB에서통째로불러오기ToolStripMenuItem.Size = new System.Drawing.Size(267, 28);
-            this.dB에서통째로불러오기ToolStripMenuItem.Text = "DB에서 통째로 불러오기";
-            this.dB에서통째로불러오기ToolStripMenuItem.Click += new System.EventHandler(this.dB에서통째로불러오기ToolStripMenuItem_Click);
+            this.업로드자동화ToolStripMenuItem.Name = "업로드자동화ToolStripMenuItem";
+            this.업로드자동화ToolStripMenuItem.Size = new System.Drawing.Size(267, 28);
+            this.업로드자동화ToolStripMenuItem.Text = "업로드 자동화";
+            this.업로드자동화ToolStripMenuItem.Click += new System.EventHandler(this.업로드자동화ToolStripMenuItem_Click);
             // 
-            // dB에서통째로저장하기ToolStripMenuItem
+            // 다운로드자동화ToolStripMenuItem
             // 
-            this.dB에서통째로저장하기ToolStripMenuItem.Name = "dB에서통째로저장하기ToolStripMenuItem";
-            this.dB에서통째로저장하기ToolStripMenuItem.Size = new System.Drawing.Size(267, 28);
-            this.dB에서통째로저장하기ToolStripMenuItem.Text = "DB에서 통째로 저장하기";
-            this.dB에서통째로저장하기ToolStripMenuItem.Click += new System.EventHandler(this.dB에서통째로저장하기ToolStripMenuItem_Click);
+            this.다운로드자동화ToolStripMenuItem.Name = "다운로드자동화ToolStripMenuItem";
+            this.다운로드자동화ToolStripMenuItem.Size = new System.Drawing.Size(267, 28);
+            this.다운로드자동화ToolStripMenuItem.Text = "다운로드 자동화";
+            this.다운로드자동화ToolStripMenuItem.Click += new System.EventHandler(this.다운로드자동화ToolStripMenuItem_Click);
             // 
             // Form1
             // 
@@ -499,7 +517,9 @@ namespace Day015_01_color
         private System.Windows.Forms.ToolStripMenuItem dB로열기ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dB로저장ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dB에서통째로불러오기ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dB에서통째로저장하기ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dB로통째로저장하기ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 업로드자동화ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 다운로드자동화ToolStripMenuItem;
     }
 }
 

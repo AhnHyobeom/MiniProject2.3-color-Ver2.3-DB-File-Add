@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.IO;
 using System.Drawing.Imaging;
 using MySql.Data.MySqlClient;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace Day015_01_color
 {
@@ -35,8 +36,46 @@ namespace Day015_01_color
         String sql = "";  // 물건박스
         MySqlDataReader reader; // 트럭이 가져올 끈
         int saveIndex = 0;
+        String[] fileNameAry = { };
 
         //메뉴 이벤트 처리부
+        private void 업로드자동화ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog(); // 새로운 폴더 선택 Dialog 를 생성합니다. 
+            dialog.IsFolderPicker = true;
+            String directoryName = "";
+            if (dialog.ShowDialog() != CommonFileDialogResult.Ok) // 폴더 선택이 정상적으로 되면 아래 코드를 실행합니다. 
+            {
+                return;
+            }
+            directoryName = dialog.FileName; // 선택한 폴더 이름을 label2에 출력합니다.
+            DirectoryInfo di = new DirectoryInfo(directoryName);
+            foreach (FileInfo File in di.GetFiles()) // 선택 폴더의 파일 목록을 스캔합니다.
+            {
+                Array.Resize(ref fileNameAry, fileNameAry.Length + 1);
+                fileNameAry[fileNameAry.Length - 1] = File.DirectoryName.ToString() + "\\" + File.Name.ToString();// 개별 파일 별로 정보를 추가합니다.
+            }
+            DirectoryInfo[] di_sub = di.GetDirectories(); // 하위 폴더 목록들의 정보 가져옵니다.
+            if (di_sub.Length > 0)
+            {
+                foreach (DirectoryInfo di1 in di_sub) // 하위 폴더목록을 스캔합니다.
+                {
+                    foreach (FileInfo File in di1.GetFiles()) // 선택 폴더의 파일 목록을 스캔합니다.
+                    {
+                        Array.Resize(ref fileNameAry, fileNameAry.Length + 1);
+                        fileNameAry[fileNameAry.Length - 1] = File.DirectoryName.ToString() + "\\" + File.Name.ToString(); // 개별 파일 별로 정보를 추가합니다.
+                    }
+                }
+            }
+            for(int i = 0; i < fileNameAry.Length; i++)
+            {
+                MessageBox.Show(fileNameAry[i]);
+            }
+        }
+        private void 다운로드자동화ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
         private void dB에서통째로불러오기ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenDBFull odbf = new OpenDBFull();
