@@ -36,19 +36,38 @@ namespace Day015_01_color
         String sql = "";  // 물건박스
         MySqlDataReader reader; // 트럭이 가져올 끈
         int saveIndex = 0;
-        String[] fileNameAry = { };
+        String[] fileNameAry = { }; // 자동 업로드 파일 저장 배열 
 
         //메뉴 이벤트 처리부
         private void 업로드자동화ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CommonOpenFileDialog dialog = new CommonOpenFileDialog(); // 새로운 폴더 선택 Dialog 를 생성합니다. 
             dialog.IsFolderPicker = true;
-            String directoryName = "";
             if (dialog.ShowDialog() != CommonFileDialogResult.Ok) // 폴더 선택이 정상적으로 되면 아래 코드를 실행합니다. 
             {
                 return;
             }
-            directoryName = dialog.FileName; // 선택한 폴더 이름을 label2에 출력합니다.
+            String directoryName = dialog.FileName; // 선택한 폴더 이름
+            DirectoryInfo di = new DirectoryInfo(directoryName);
+            foreach (FileInfo File in di.GetFiles()) // 선택 폴더의 파일 목록을 스캔합니다.
+            {
+                Array.Resize(ref fileNameAry, fileNameAry.Length + 1);
+                fileNameAry[fileNameAry.Length - 1] = File.DirectoryName.ToString() + "\\" + File.Name.ToString();// 개별 파일 별로 정보를 추가합니다.
+            }
+            DirectoryInfo[] di_sub = di.GetDirectories(); // 하위 폴더 목록들의 정보 가져옵니다.
+            if (di_sub.Length > 0) // 하위 폴더가 존재하면
+            { // dfs 시작
+                for (int i = 0; i < di_sub.Length; i++)
+                {
+                    dfs_autoUpload(di_sub[i].FullName);
+                }
+            }
+            autoUpload();
+            MessageBox.Show("업로드 모두 완료");
+        }
+        private void dfs_autoUpload(String fullName)
+        { // dfs 알고리즘
+            String directoryName = fullName; // 하위 폴더 이름
             DirectoryInfo di = new DirectoryInfo(directoryName);
             foreach (FileInfo File in di.GetFiles()) // 선택 폴더의 파일 목록을 스캔합니다.
             {
@@ -57,20 +76,45 @@ namespace Day015_01_color
             }
             DirectoryInfo[] di_sub = di.GetDirectories(); // 하위 폴더 목록들의 정보 가져옵니다.
             if (di_sub.Length > 0)
-            {
-                foreach (DirectoryInfo di1 in di_sub) // 하위 폴더목록을 스캔합니다.
+            { // dfs
+                for (int i = 0; i < di_sub.Length; i++)
                 {
-                    foreach (FileInfo File in di1.GetFiles()) // 선택 폴더의 파일 목록을 스캔합니다.
-                    {
-                        Array.Resize(ref fileNameAry, fileNameAry.Length + 1);
-                        fileNameAry[fileNameAry.Length - 1] = File.DirectoryName.ToString() + "\\" + File.Name.ToString(); // 개별 파일 별로 정보를 추가합니다.
-                    }
+                    dfs_autoUpload(di_sub[i].FullName);
                 }
             }
-            for(int i = 0; i < fileNameAry.Length; i++)
+        }
+        private void autoUpload()
+        {
+            String connStr2 = "Server=192.168.56.101;Uid=winuser;Pwd=4321;Database=blob_db;Charset=UTF8";
+            MySqlConnection conn2 = new MySqlConnection(connStr2); // 교량
+            MySqlCommand cmd2; // 트럭
+            conn2.Open();
+            cmd2 = new MySqlCommand("", conn2);
+            Random rnd = new Random();
+            for (int i = 0; i < fileNameAry.Length; i++)
             {
-                MessageBox.Show(fileNameAry[i]);
+                string fullname = fileNameAry[i];
+                int f_id = rnd.Next(int.MinValue, int.MaxValue);
+                String f_fname = Path.GetFileNameWithoutExtension(fullname);
+                String f_extname = Path.GetExtension(fullname);
+                f_extname = f_extname.Replace(".", "");
+                Bitmap tempB = new Bitmap(fullname);
+                ulong f_fsize = (ulong)(tempB.Width * tempB.Height * RGB);
+                sql = "INSERT INTO blob_table(f_id, f_fname, f_extname, f_fsize, f_data) VALUES (";
+                sql += f_id + ", '" + f_fname + "', '" + f_extname + "', " + f_fsize + ",";
+                sql += "@BLOB_DATA" + ")";
+                // 파일을 준비 임시 폴더에 저장
+                FileStream fs = new FileStream(fullname, FileMode.Open, FileAccess.Read);
+                byte[] blob_data = new byte[f_fsize];
+                fs.Read(blob_data, 0, (int)f_fsize);
+                fs.Close();
+
+                cmd2.Parameters.Clear();
+                cmd2.Parameters.AddWithValue("@BLOB_DATA", blob_data);
+                cmd2.CommandText = sql;  // 짐을 트럭에 싣기
+                cmd2.ExecuteNonQuery();
             }
+            conn2.Close();
         }
         private void 다운로드자동화ToolStripMenuItem_Click(object sender, EventArgs e)
         {

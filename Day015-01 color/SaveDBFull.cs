@@ -61,7 +61,7 @@ namespace Day015_01_color
             sql = "INSERT INTO blob_table(f_id, f_fname, f_extname, f_fsize, f_data) VALUES (";
             sql += f_id + ", '" + f_fname + "', '" + f_extname + "', " + f_fsize + ",";
             sql += "@BLOB_DATA" + ")";
-            // 파일을 준비
+            // 파일을 준비 임시 폴더에 저장
             String full_name = "C:\\TempImages\\" + saveIndex + "번째 이미지.png";
             FileStream fs = new FileStream(full_name, FileMode.Open, FileAccess.Read);
             byte[] blob_data = new byte[f_fsize];
